@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="icon" href="logofeed.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПМ.05.01 - Практические работы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Bitter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --text-color: #334155;
+            --toc-bg: #ffffff;
+            --toc-text: #2d3748;
+            --part1-icon: #1e3a8a;  /* Темно-синий для части 1 */
+            --part2-icon: #0369a1;  /* Голубовато-синий для части 2 */
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Шапка */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header.scrolled {
+            padding: 12px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: translateX(5px);
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-text {
+            font-family: 'Bitter', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            position: relative;
+        }
+        
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .logo-container:hover .logo-text::after {
+            width: 100%;
+        }
+        
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 1001;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 15px;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .nav-link i {
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .nav-link.active:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Герой-секция */
+        .hero {
+            background: linear-gradient(rgb(8, 71, 206), rgba(0, 62, 143, 0.7)), url('background.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-top: 0;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Bitter', serif;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Основное содержимое */
+        .main-content {
+            padding: 40px 0;
+            flex: 1;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Оглавление */
+        .toc {
+            background-color: var(--toc-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .toc-title {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            font-family: 'Bitter', serif;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .toc-columns {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .toc-part {
+            flex: 1;
+            background-color: rgba(248, 250, 252, 0.7);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .part-title {
+            font-size: 1.6rem;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            font-family: 'Bitter', serif;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .part-title i {
+            font-size: 1.6rem;
+        }
+        
+        .part1-title i {
+            color: var(--part1-icon);
+        }
+        
+        .part2-title i {
+            color: var(--part2-icon);
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-item {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .toc-icon {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        
+        .part1-item .toc-icon {
+            color: var(--part1-icon);
+        }
+        
+        .part2-item .toc-icon {
+            color: var(--part2-icon);
+        }
+        
+        .toc-link {
+            color: var(--toc-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 8px 12px;
+            line-height: 1.4;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 6px;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+        
+        .toc-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+            transform: translateX(5px);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Подвал */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: auto;
+            width: 100%;
+        }
+        
+        .footer-text {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+        
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 25px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .toc-columns {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .toc-part {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="box-logo.png" alt="Логотип" class="logo">
+                <span class="logo-text">ПМ.05. Управление деятельностью</span>
+            </div>
+            
+            <button class="nav-toggle" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="главная.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
+                    <li class="nav-item"><a href="нормативные-документы.html" class="nav-link"><i class="fas fa-file-alt"></i> Документы</a></li>
+                    <li class="nav-item"><a href="практические-работы.html" class="nav-link active"><i class="fas fa-laptop-code"></i> Практические работы</a></li>
+                    <li class="nav-item"><a href="промежуточная-аттестация.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Аттестация</a></li>
+                    <li class="nav-item"><a href="практика.html" class="nav-link"><i class="fas fa-briefcase"></i> Практика</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Практические работы</h1>
+            <p class="hero-subtitle">ПМ.05. Управление деятельностью в подразделении организации</p>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Оглавление -->
+            <section class="toc">
+                <h2 class="toc-title">Содержание</h2>
+                <div class="toc-columns">
+                    <!-- Часть 1 -->
+                    <div class="toc-part">
+                        <h3 class="part-title part1-title"><i class="fas fa-book-open"></i>Часть 1</h3>
+                        <ul class="toc-list">
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-balance-scale toc-icon"></i>
+                                <a href="#section-1" class="toc-link">Раздел 1. Теоретические и правовые аспекты управления</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-brain toc-icon"></i>
+                                <a href="#section-2" class="toc-link">Раздел 2. Психологические аспекты управления</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-sitemap toc-icon"></i>
+                                <a href="#section-3" class="toc-link">Раздел 3. Позиционирование структурного подразделения</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-people-arrows toc-icon"></i>
+                                <a href="#section-4" class="toc-link">Раздел 4. Организация взаимодействия между подразделениями</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-calendar-alt toc-icon"></i>
+                                <a href="#section-5" class="toc-link">Раздел 5. Роль оперативного планирования</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-user-tie toc-icon"></i>
+                                <a href="#section-6" class="toc-link">Раздел 6. Модель оперативного руководства</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-tasks toc-icon"></i>
+                                <a href="#section-7" class="toc-link">Раздел 7. Управление структурным подразделением</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-users toc-icon"></i>
+                                <a href="#section-8" class="toc-link">Раздел 8. Роль руководителя в создании коллектива</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-medal toc-icon"></i>
+                                <a href="#section-9" class="toc-link">Раздел 9. Мотивация и стимулирование</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-user-check toc-icon"></i>
+                                <a href="#section-10" class="toc-link">Раздел 10. Личная эффективность руководителя</a>
+                            </li>
+                            <li class="toc-item part1-item">
+                                <i class="fas fa-graduation-cap toc-icon"></i>
+                                <a href="#section-11" class="toc-link">Раздел 11. Специфика управления в сфере образования</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Часть 2 -->
+                    <div class="toc-part">
+                        <h3 class="part-title part2-title"><i class="fas fa-university"></i>Часть 2</h3>
+                        <ul class="toc-list">
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-chalkboard-teacher toc-icon"></i>
+                                <a href="#section-12" class="toc-link">Раздел 1. Система образования</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-landmark toc-icon"></i>
+                                <a href="#section-13" class="toc-link">Раздел 2. Органы управления и самоуправления</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-file-signature toc-icon"></i>
+                                <a href="#section-14" class="toc-link">Раздел 3. Документооборот</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-lightbulb toc-icon"></i>
+                                <a href="#section-15" class="toc-link">Раздел 4. Инновации и развитие</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-laptop-code toc-icon"></i>
+                                <a href="#section-16" class="toc-link">Раздел 5. Информационные технологии в образовании</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-chart-bar toc-icon"></i>
+                                <a href="#section-17" class="toc-link">Раздел 6. Публичная отчетность</a>
+                            </li>
+                            <li class="toc-item part2-item">
+                                <i class="fas fa-star-half-alt toc-icon"></i>
+                                <a href="#section-18" class="toc-link">Раздел 7. Система оценки и управления качеством</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <main class="main-content">
+                
+                <h1 class="toc-title">Часть I</h1>
+<style>
+ body 
+.section {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    color: #2980b9;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.practical-work {
+    background-color: #f8f9fa;
+    border-left: 4px solid #3498db;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+}
+
+.practical-work:hover {
+    background-color: #e9f7fe;
+    transform: translateX(5px);
+}
+
+.practical-work h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { 
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateX(0);
+        opacity: 1;
+    }
+}</style>
+                <div class="section" id="section-1">
+                    <h2>Раздел 1. Теоретические и правовые аспекты управления деятельностью в подразделении организации</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/BTPj7RIhIYgBJw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №1. Семинар по теме: "Нормативно-правовое обеспечение управленческой деятельности"</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/i8K7U3JVYRXnKw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №2. Организационные структуры управления</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/aGk1eghjyCh1Hg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №3. Методы управления</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-2">
+                    <h2>Раздел 2. Психологические аспекты управления</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/fhoa_0xORXgwXg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №4. Классификация и типология власти</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/FLBH1FUvneWnmw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №5. Деловой этикет</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/FFweoVrc6eGApA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №6. Морально-психологический климат коллектива</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/eNNNro8sU4kIXQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №7. Конфликтные ситуации и пути их разрешения</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/oYFiwbv-BqL61Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №8. Оценка психологических качеств личности</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-3">
+                    <h2>Раздел 3. Позиционирование структурного подразделения в рамках предприятия</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/Syc5ZmozeX1Jpw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №9. Подход к управлению подразделением</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/L0dFFEgA7mUcZA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №10. Управление по целям в работе подразделения</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/iUjxwwxMGFfbqg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №11. Планирование численности и состава персонала</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/fJRanvbR7EXZ7Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №12. Расчет экономических показателей. Определение факторов повышения эффективности и поиск резервов</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/TFirEoOCcjgkLw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №13. Ведение документации, регламентирующей работу подразделения</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/eQBCW0-ytOJGXw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 3.1. Виды подходов к управлению структурным подразделением организации</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/tYre_XA4JM5cmw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 3.5. Документы регламентирующие работу подразделения</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-4">
+                    <h2>Раздел 4. Организация взаимодействия между подразделениями</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/LTZYt2k1UEc-Sw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №14. Организация взаимодействия подразделений</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/XxfEbj0pwE6Plg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №15. Основные и вспомогательные бизнес-процессы</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/jVV7X2t_s9JEEg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №16. Служебные функции и должностные обязанности сотрудников</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-5">
+                    <h2>Раздел 5. Роль оперативного планирования в работе структурного подразделения</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/WUfBrm90-druDw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №17. Планирование работы сотрудников подразделения</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/9S4YwZ0E6v0EEQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №18. Формы и принципы планирования средств на оплату труда</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/mNkcN9mmdBAT0Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 5.1. Детализация планов компании до уровня структурного подразделения</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-6">
+                    <h2>Раздел 6. Модель оперативного руководства структурным подразделением</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/y7PZpofanMHn7g" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №19. Компетентность и задачи руководителя</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/kx8DXcPSqQUXSw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №20. Особенности менеджмента в образовании</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/rAA3508DGNosag" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №21. Оперативное управление в работе подразделения</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/NWUovngWrw_G3Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №22. Принятие управленческих решений</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-7">
+                    <h2>Раздел 7. Управление структурным подразделением</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/xa-NJ6uYFHVX9g" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №23. Оценка эффективности работы подразделения</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/cFZAXdFsmlnSzw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №24. Оценка эффективности труда в подразделении</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/TFoAm99LlXPsZw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №25. Методика оценки персонала в системе управления эффективностью работы</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/Q70J3luksb43zw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №26. Сферы ответственности руководителя</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/S9pLUwChnioNkQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 7.1. Ключевые показатели эффективности (KPI) подразделения и сотрудников: обзоры, стандарты, качественные показатели</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/4qFRYDBjEmvRkw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 7.3. Выявление резервов повышения эффективности работы</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/RZYswaQnHu4A9A" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 7.3. Отвественность руководителя</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-8">
+                    <h2>Раздел 8. Роль руководителя в создании работоспособного коллектива</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/V6A9ICm0ihPqbA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №27. Стили управления</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/ygBuP1gG6vAkCA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №28. Управленческое воздействие на подчиненных</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/oyib5FxqBc-Kvw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №29. Организация работы исполнителей</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/LKwB47vNgzDdDA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №30. Конфликты и пути их преодоления</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/-7IrdTSfe3z5sw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 8.1. Функции руководителя</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/YLC797sheT6JEw" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 8.2. Управленческий цикл</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/zN9NBG9HSdRWqQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 8.4. Конфликты в трудовом коллективе</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-9">
+                    <h2>Раздел 9. Мотивация и стимулирование – инструменты эффективного управления</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/2SNYS8IVMW1Vrg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №31. Мотивация и стимулирование сотрудников предприятия</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-10">
+                    <h2>Раздел 10. Личная эффективность руководителя</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/7XKXcUS8M6YzhQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №32. Самооценка и карьерный рост</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/v5ObSEKjhzVSiQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №33. Деловое и управленческое общение в профессиональной деятельности</h3>
+                        </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/d/aT156JT93ixmuQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Дополнение к практической работе №33.Принципы делового общения в коллективе</h3>
+                        </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-11">
+                    <h2>Раздел 11. Специфика организации и управления в сфере образования</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/YQNaONqWjw--4Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №34. Зарубежный опыт управления деятельностью образовательной организацией</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/E34QfKB1o_Yetg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №35. Семинар по теме "Стратегическое управление деятельностью предприятия сферы образования"</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/kZM4CD7kvNmUsg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №36. Структура органов управления в сфере образования в РФ</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/O47j-nOHVio3TQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №37. Поиски построения эффективного управления системой образования</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/F2G-32inYjBFCg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №38. Построение схемы делегирования полномочий на примере колледжа</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/Db-K2cp0_LPLOA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №39. Разработка должностных инструкций</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/2BTJYvqI0h0CTg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №40. Модель восприятия потребителем качества услуги</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/r3iG9NGiYzcd_Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №41. Представление услуги в виде процесса</h3>
+                            </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/Mm-Vdt6teIo5fg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 11.4 Управление персоналом образовательной организации</h3>
+                            </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/JpcOP8Grsjg0Tg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 11.5 Управление качеством продукции и услуг в сфере образования</h3>
+                            </a>
+                    </div>
+                </div>
+                <h1 class="toc-title"> Часть II</h1>
+                <div class="section" id="section-12">
+                    <h2>Раздел 1. Система образования</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/QHS4EN2IAmzsGg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №42. Формы реализации образовательных программ</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/GKSPQBlb5YyUFQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №43. Полномочия учредителя образовательной организации</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/J-NHMcrV2JvVng" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №44. Типы образовательных организаций. Организационно-правовые формы образовательных организаций</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/lgmrGvbrlRYwBg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №45. Госаккредитация образовательной деятельности</h3>
+                    </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-13">
+                    <h2>Раздел 2. Органы управления и самоуправления</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/oVydBFASi3USCA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №46. Штатное расписание</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/sM2trDtQJ7BzJQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №47. Типы и структуры органов управления и самоуправления образовательной организации</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/BDle9Y5tlcYoYA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №48. Заключение трудового договора с руководителем образовательной организации. Заработная плата руководителя образовательной организации</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/cMMKID-AqddAcg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №49. Особенности увольнения руководителя образовательной организации. Особенности увольнения руководителя структурного подразделения образовательной организации  </h3>
+                    </a>
+                        </div>
+                    
+                        <div class="practical-work">
+                            <a href="https://disk.yandex.ru/i/SVpwWgrMaE3OAQ" 
+                               target="_blank"
+                               style="text-decoration: none; color: inherit; display: block;">
+                                <h3 style="margin: 0; padding: 8px 0;">Практическая работа №50. Сравнительная характеристика наблюдательного и управляющего советов</h3>
+                                </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/4kEOhYc7OCfePA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №51. Права обучающихся на участие в управлении образовательной организацией. Отличие советов обучающихся, родителей от коллегиальных органов управления с участием обучающихся, родителей </h3>
+                            </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-14">
+                    <h2>Раздел 3. Документооборот</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/9LWIjp_Wi9rF7A" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №52. Устав и иные локальные нормативные акты. Устав и советы обучающихся, законных представителей</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/d/UPlel0tzZ6RyhQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Устав образовательной организации</h3>
+                            </a>
+                    </div>
+
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/7xfyVQ-PnzWyrg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №53. Принятие, изменение и отмена локальных нормативных актов</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/C69sss9gX4n9lQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №54. Требования к оформлению писем и приказов. Документы об образовании</h3>
+                            </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-15">
+                    <h2>Раздел 4. Инновации и развитие</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/7T24ZpSHhegoGg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №55. Принятие, изменение и отмена локальных нормативных актов</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/3nAWtFmKz7zyGA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №56. Реализация программы развития образовательной организации</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/a_jesPy0muMX6Q" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №57. Инновационные площадки</h3>
+                            </a>
+                    </div>
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/6tmfbHmoUPpnvA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Тема 4.3 Инновации</h3>
+                            </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-16">
+                    <h2>Раздел 5. Информационные технологии в образовании</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/8XLSajmw1Mt5iQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №58. Разработка программы информатизации образовательной организации</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/vfkmWlKHMQ8vTQ" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №59. Учет успеваемости</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/2YwqeZLL9XLOlg" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №60. Создание сайта образовательной организации. Размещение в сети интернет</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/pPa6OdCx-Wlx6w" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №61. Обработка и хранение персональных данных. Защита персональных данных</h3>
+                            </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-17">
+                    <h2>Раздел 6. Публичная отчетность</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/lVcR-BpadrYo2g" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                           <h3 style="margin: 0; padding: 8px 0;">Практическая работа №62. Порядок обеспечения информационной открытости образовательных организаций. Информация, подлежащая размещению на официальном сайте образовательной организации в сети Интернет.</h3>
+                    </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/O3czVGQf0icSig" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №63. Содержание и подготовка отчета по самообладанию</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/mXU4_RKT9Il8gA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №64. Подготовка и опубликование публичного доклада</h3>
+                            </a>
+                    </div>
+                </div>
+            
+                <div class="section" id="section-18">
+                    <h2>Раздел 7. Система оценки и управления качеством</h2>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/3dCxWX8GLP-dLA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №65. Инструменты внутришкольного контроля. Документационное сопровождение внутришкольного контроля</h3>
+                            </a>
+                    </div>
+                    
+                    <div class="practical-work">
+                        <a href="https://disk.yandex.ru/i/pWhpPBPH7IyVoA" 
+                           target="_blank"
+                           style="text-decoration: none; color: inherit; display: block;">
+                            <h3 style="margin: 0; padding: 8px 0;">Практическая работа №66. Отличие ВСОКО от ВШК</h3>
+                            </a>
+                    </div>
+                </div>
+              </main>
+              
+              <style>
+                html {
+                  scroll-behavior: smooth;
+                }
+              </style>
+              
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Дизайн и разработка: Феденев Евгений. Обратная связь <a href="https://vk.com/outsideslogan" class="footer-link" target="_blank">Вконтакте</a>.</p>
+            <p class="footer-text">© 2025 ПМ.05.01.</p>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Мобильное меню
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Эффект при скролле для шапки
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Показываем/скрываем кнопку "Наверх"
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        // Кнопка "Наверх"
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
