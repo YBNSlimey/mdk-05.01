@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="icon" href="logofeed.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПМ.05. - Главная</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Bitter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --text-color: #334155;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Шапка */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: translateX(5px);
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-text {
+            font-family: 'Bitter', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            position: relative;
+        }
+        
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .logo-container:hover .logo-text::after {
+            width: 100%;
+        }
+        
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 1001;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 15px;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-link i {
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .nav-link.active:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Герой-секция */
+        .hero {
+            background: linear-gradient(rgb(8, 71, 206), rgba(0, 62, 143, 0.7)), url('background.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            padding: 40px 0;
+            flex: 1;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        /* Интерактивный виджет "Обо мне" */
+        .interactive-about {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .interactive-about.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .interactive-about:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .about-photo-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        .about-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+            filter: grayscale(20%);
+        }
+        
+        .interactive-about:hover .about-photo {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(37, 99, 235, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .interactive-about:hover .photo-overlay {
+            opacity: 1;
+        }
+        
+        .about-content {
+            flex: 1;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width 0.5s ease;
+        }
+        
+        .interactive-about:hover .section-title:after {
+            width: 100%;
+        }
+        
+        .about-text {
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .highlight:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .interactive-about:hover .highlight:after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .social-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease 0.2s;
+            text-decoration: none;
+        }
+        
+        .interactive-about:hover .social-badge {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .social-badge i {
+            font-size: 1.1rem;
+        }
+        
+        /* Подвал */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-text {
+            margin: 10px 0;
+        }
+        
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 25px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .interactive-about {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .about-photo-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .section-title:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .social-badge {
+                position: static;
+                margin-top: 20px;
+                display: inline-flex;
+                transform: none;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="box-logo.png" alt="Логотип" class="logo">
+                <span class="logo-text">ПМ.05. Управление деятельностью</span>
+            </div>
+            
+            <button class="nav-toggle" aria-label="Меню">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="главная.html" class="nav-link active"><i class="fas fa-home"></i> Главная</a></li>
+                    <li class="nav-item"><a href="нормативные-документы.html" class="nav-link"><i class="fas fa-file-alt"></i> Документы</a></li>
+                    <li class="nav-item"><a href="практические-работы.html" class="nav-link"><i class="fas fa-laptop-code"></i> Практические работы</a></li>
+                    <li class="nav-item"><a href="промежуточная-аттестация.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Аттестация</a></li>
+                    <li class="nav-item"><a href="практика.html" class="nav-link"><i class="fas fa-briefcase"></i> Практика</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Сайт-портфолио Феденев Евгений Иванович</h1>
+            <p class="hero-subtitle">ПМ.05.01 Управление деятельностью в подразделении организации</p>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="section">
+                <div class="interactive-about">
+                    <div class="about-photo-container">
+                        <img src="jeka.png" class="about-photo" alt="Феденев Евгений">
+                        <div class="photo-overlay"></div>
+                    </div>
+                    
+                    <div class="about-content">
+                        <h3 class="section-title">Обо мне</h3>
+                        <div class="about-text">
+                            <p>Меня зовут <span class="highlight">Феденев Евгений</span>, я студент 54 группы, специальности <span class="highlight">09.02.05 «Прикладная информатика (по отраслям)»</span>. Прошёл курсы переподготовки по педагогике и психологии, также я активно изучаю программирование: успешно окончил курсы <span class="highlight">«Python для учителей»</span> и программу <span class="highlight">«Основы Python. Программирование дронов»</span>.</p>
+                            <p>В своей учебной и профессиональной деятельности я стремлюсь применять полученные знания на практике, участвуя в различных проектах и инициативах. Моё стремление к самообразованию и развитию позволяет мне постоянно двигаться вперёд и достигать новых высот.</p>
+                        </div>
+                        
+                        <a href="https://vk.com/outsideslogan" class="social-badge" target="_blank">
+                            <i class="fab fa-vk"></i>
+                            <span>Мой ВКонтакте</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+<section class="section">
+    <h2 class="section-title" style="text-align: center; width: 100%; display: block; margin-left: auto; margin-right: auto;">
+        Использованные Электронно-Образовательные ресурсы
+    </h2>
+    <div class="resources-grid">
+        <a href="https://www.consultant.ru/" target="_blank" class="resource-item">
+            <div class="resource-logo-container">
+                <img src="консультант.png" alt="КонсультантПлюс" class="resource-logo">
+            </div>
+            <span class="resource-name">Консультант+</span>
+        </a>
+        <a href="https://garant.ru/" target="_blank" class="resource-item">
+            <div class="resource-logo-container">
+                <img src="logo-2.png" alt="Гарант" class="resource-logo">
+            </div>
+            <span class="resource-name">Гарант</span>
+        </a>
+        <a href="https://github.com/" target="_blank" class="resource-item">
+            <div class="resource-logo-container">
+                <img src="pngwing.com.png" alt="GitHub" class="resource-logo">
+            </div>
+            <span class="resource-name">GitHub</span>
+        </a>
+        <a href="https://fontawesome.com/" target="_blank" class="resource-item">
+            <div class="resource-logo-container">
+                <img src="font-awesome.png" alt="Font Awesome" class="resource-logo">
+            </div>
+            <span class="resource-name">Font Awesome</span>
+        </a>
+        <a href="https://fonts.google.com/" target="_blank" class="resource-item">
+            <div class="resource-logo-container">
+                <img src="google-fonts.png" alt="Google Fonts" class="resource-logo">
+            </div>
+            <span class="resource-name">Google Fonts</span>
+        </a>
+    </div>
+</section>
+
+<style>
+    /* Стили для сетки ресурсов */
+    .resources-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+    
+    .resource-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        width: 120px;
+        flex-shrink: 0;
+    }
+    
+    .resource-logo-container {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        padding: 15px;
+    }
+    
+    .resource-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+    
+    .resource-name {
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-align: center;
+        transition: color 0.3s ease;
+    }
+    
+    /* Анимации */
+    .resource-item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .resource-item:hover .resource-logo-container {
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+    }
+    
+    .resource-item:hover .resource-logo {
+        transform: scale(1.1);
+    }
+    
+    .resource-item:hover .resource-name {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+        .resources-grid {
+            gap: 20px;
+        }
+        
+        .resource-item {
+            width: 100px;
+        }
+        
+        .resource-logo-container {
+            width: 80px;
+            height: 80px;
+            padding: 10px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .resources-grid {
+            gap: 15px;
+        }
+        
+        .resource-item {
+            width: 80px;
+        }
+        
+        .resource-logo-container {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+        }
+        
+        .resource-name {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Дизайн и разработка: Феденев Евгений. Обратная связь <a href="https://vk.com/outsideslogan" class="footer-link" target="_blank">Вконтакте</a>.</p>
+            <p class="footer-text">© 2025 ПМ.05.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Мобильное меню
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Эффект при скролле для шапки
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Анимация виджета "Обо мне"
+        document.addEventListener('DOMContentLoaded', function() {
+            const aboutWidget = document.querySelector('.interactive-about');
+            
+            setTimeout(() => {
+                aboutWidget.classList.add('animated');
+            }, 300);
+            
+            // Добавляем эффект пульсации для фото при загрузке
+            const photo = document.querySelector('.about-photo');
+            photo.style.animation = 'pulse 2s ease-in-out';
+            
+            // Через 2 секунды убираем анимацию пульсации
+            setTimeout(() => {
+                photo.style.animation = '';
+            }, 2000);
+        });
+        
+        // Добавляем ключевые кадры для анимации пульсации
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); filter: grayscale(20%); }
+                50% { transform: scale(1.03); filter: grayscale(0%); }
+                100% { transform: scale(1); filter: grayscale(20%); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
